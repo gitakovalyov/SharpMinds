@@ -1,0 +1,46 @@
+{
+    "name": "sharpminds/payment-gateway-mtls",
+    "description": "Payment gateway client with mTLS and HMAC request signing support",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SharpMinds",
+            "email": "dev@sharpminds.com"
+        }
+    ],
+    "keywords": [
+        "payment",
+        "mtls",
+        "hmac",
+        "curl",
+        "php"
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-curl": "*",
+        "ext-openssl": "*",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SharpMinds\\PaymentGateway\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SharpMinds\\PaymentGateway\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:integration": "phpunit --testsuite Integration",
+        "test:unit": "phpunit --testsuite Unit"
+    }
+}

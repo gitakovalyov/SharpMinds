@@ -1,0 +1,10 @@
+vendor/
+composer.lock
+.env
+*.pem
+*.crt
+*.key
+*.p12
+.phpunit.cache
+.phpunit.result.cache
+certs/
