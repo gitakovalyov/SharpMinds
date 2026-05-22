@@ -28,18 +28,29 @@ class MtlsHttpClient implements HttpClientInterface
             throw new RequestException("Failed to initialize cURL for URL: $url");
         }
 
+        $certPath = $this->config->getCertPath();
+        $keyPath  = $this->config->getKeyPath();
+
+        if ($certPath === '' || $keyPath === '') {
+            throw new RequestException('Certificate paths must not be empty.');
+        }
+
         $options = [
             CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT_SECONDS,
             CURLOPT_HTTPGET        => true,
             CURLOPT_HTTPHEADER     => ["X-Signature: $signature"],
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSLCERT        => $this->config->getCertPath(),
-            CURLOPT_SSLKEY         => $this->config->getKeyPath(),
-            CURLOPT_SSLKEYPASSWD   => $this->config->getKeyPassphrase(),
+            CURLOPT_SSLCERT        => $certPath,
+            CURLOPT_SSLKEY         => $keyPath,
             CURLOPT_SSL_VERIFYHOST => $this->config->getVerifyPeer() ? 2 : 0,
             CURLOPT_SSL_VERIFYPEER => $this->config->getVerifyPeer(),
             CURLOPT_TIMEOUT        => self::TIMEOUT_SECONDS,
         ];
+
+        $passphrase = $this->config->getKeyPassphrase();
+        if ($passphrase !== '') {
+            $options[CURLOPT_SSLKEYPASSWD] = $passphrase;
+        }
 
         $caCertPath = $this->config->getCaCertPath();
         if ($caCertPath !== '') {
@@ -53,7 +64,7 @@ class MtlsHttpClient implements HttpClientInterface
 
         $body = curl_exec($ch);
 
-        if ($body === false) {
+        if (!is_string($body)) {
             $error = curl_error($ch);
             curl_close($ch);
             throw new RequestException("cURL error: $error");

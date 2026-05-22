@@ -94,7 +94,7 @@ class Config
     {
         $value = $_ENV[$key] ?? getenv($key);
 
-        return $value === false || $value === null ? $default : (string) $value;
+        return $value === false ? $default : (string) $value;
     }
 
     private function envBool(string $key, bool $default): bool
