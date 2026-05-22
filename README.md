@@ -1,6 +1,6 @@
 # sharpminds/payment-gateway-mtls
 
-A PHP 8.1+ Composer package providing a payment gateway HTTP client with mutual TLS (mTLS) authentication and HMAC-SHA256 request signing.
+A PHP 8.2+ Composer package providing a payment gateway HTTP client with mutual TLS (mTLS) authentication and HMAC-SHA256 request signing.
 
 ## Installation
 
