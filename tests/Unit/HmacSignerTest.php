@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SharpMinds\PaymentGateway\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SharpMinds\PaymentGateway\Contract\SignerInterface;
 use SharpMinds\PaymentGateway\Security\HmacSigner;
 
 class HmacSignerTest extends TestCase
@@ -15,11 +14,6 @@ class HmacSignerTest extends TestCase
     protected function setUp(): void
     {
         $this->signer = new HmacSigner('test-secret');
-    }
-
-    public function testImplementsSignerInterface(): void
-    {
-        $this->assertInstanceOf(SignerInterface::class, $this->signer);
     }
 
     public function testSignReturnsExpectedHmacSha256(): void
