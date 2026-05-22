@@ -40,8 +40,6 @@ mkdir certs
 
 **3. Extract the certificate and private key** from the `.p12` file:
 
-> **Note:** badssl.com uses an older PKCS#12 format (RC2-40-CBC) — the `-legacy` flag is required on OpenSSL 3.
-
 ```bash
 # Extract the certificate
 openssl pkcs12 -legacy \
