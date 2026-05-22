@@ -29,21 +29,43 @@ VERIFY_PEER=true
 
 ## Obtaining test certificates (badssl.com)
 
-Download the client certificate bundle from **https://badssl.com/download/** and extract the PEM files.
+**1. Download** the `.p12` bundle from **https://badssl.com/download/**
+(look for the *Client Certificate* section → download `badssl.com-client.p12`).
 
-> **Note:** badssl.com uses an older PKCS#12 format (RC2-40-CBC). On OpenSSL 3 you need the `-legacy` flag.
+**2. Create the `certs/` directory** in the project root:
+
+```bash
+mkdir certs
+```
+
+**3. Extract the certificate and private key** from the `.p12` file:
+
+> **Note:** badssl.com uses an older PKCS#12 format (RC2-40-CBC) — the `-legacy` flag is required on OpenSSL 3.
 
 ```bash
 # Extract the certificate
-openssl pkcs12 -legacy -in badssl.com-client.p12 \
-  -clcerts -nokeys -out certs/client.pem -passin pass:badssl.com
+openssl pkcs12 -legacy \
+  -in ~/Downloads/badssl.com-client.p12 \
+  -clcerts -nokeys \
+  -out certs/client.pem \
+  -passin pass:badssl.com
 
-# Extract the private key (without passphrase — simplest for testing)
-openssl pkcs12 -legacy -in badssl.com-client.p12 \
-  -nocerts -nodes -out certs/client-key.pem -passin pass:badssl.com
+# Extract the private key (no passphrase on the output key)
+openssl pkcs12 -legacy \
+  -in ~/Downloads/badssl.com-client.p12 \
+  -nocerts -nodes \
+  -out certs/client-key.pem \
+  -passin pass:badssl.com
 ```
 
-Then set `CERT_PATH` and `KEY_PATH` in `.env`, leave `KEY_PASSPHRASE` empty.
+**4. Update `.env`** with the absolute paths to the extracted files:
+
+```dotenv
+CERT_PATH=/absolute/path/to/project/certs/client.pem
+KEY_PATH=/absolute/path/to/project/certs/client-key.pem
+KEY_PASSPHRASE=
+HMAC_SECRET=any-test-secret
+```
 
 ## Running tests
 
